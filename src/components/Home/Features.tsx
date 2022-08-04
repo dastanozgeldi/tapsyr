@@ -4,7 +4,7 @@ const Features = () => {
   return (
     <div
       id="features"
-      className="grid grid-cols-3 items-center justify-items-center h-screen bg-gray-700 text-gray-100"
+      className="py-10 grid xl:grid-cols-3 items-center justify-items-center min-h-screen bg-gray-700 text-gray-100"
     >
       <div className="max-w-[40ch] bg-[#202020] rounded-md p-4">
         <h1 className="text-5xl my-3">🚀 Simplicity.</h1>
