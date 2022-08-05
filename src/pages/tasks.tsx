@@ -1,71 +1,80 @@
 import type { NextPage } from "next";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import Page from "../components/Layout/Page";
+import Todo from "../components/Todo";
 import { trpc } from "../utils/trpc";
 
-type TechnologyCardProps = {
-  name: string;
-  description: string;
-  documentation: string;
-};
-
 const Home: NextPage = () => {
-  const { data } = trpc.useQuery(["user.hi"]);
+  const { data: session } = useSession();
+  const utils = trpc.useContext();
+  const allTasks = trpc.useQuery(["todo.all"]);
+  const { data: hi } = trpc.useQuery(["user.hi"]);
+
+  const addTask = trpc.useMutation("todo.add", {
+    async onMutate({ content }) {
+      await utils.cancelQuery(["todo.all"]);
+      const tasks = allTasks.data ?? [];
+      utils.setQueryData(
+        ["todo.all"],
+        [
+          {
+            content,
+            userId: session?.user?.id || null,
+          } as any,
+          ...tasks,
+        ]
+      );
+    },
+  });
 
   return (
     <Page title="Tasks">
-      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="font-extrabold text-5xl md:text-[5rem] text-center">
-          {data ? <p>{data.greeting}</p> : <p>Loading..</p>}
-        </div>
-        <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold">
-          Create <span className="text-purple-300">T3</span> App
+      <main className="mx-auto min-h-screen p-4">
+        <h1 className="h-[10vh] font-extrabold text-5xl md:text-[5rem] text-center">
+          {hi ? <p>{hi.greeting}</p> : <p>Loading..</p>}
         </h1>
-        <p className="text-2xl">This stack uses:</p>
-        <div className="grid gap-3 pt-3 mt-3 text-center md:grid-cols-2 lg:w-2/3">
-          <TechnologyCard
-            name="NextJS"
-            description="The React framework for production"
-            documentation="https://nextjs.org/"
+
+        <div className="border-4 border-gray-700 rounded-md ">
+          <input
+            className="h-[5vh] indent-1 outline-none bg-gray-100 px-4 py-2 w-full border-b-2 border-gray-700"
+            placeholder="What needs to be done?"
+            autoFocus
+            onKeyDown={(e) => {
+              const content = e.currentTarget.value.trim();
+              if (e.key === "Enter" && content) {
+                addTask.mutate({ content });
+                e.currentTarget.value = "";
+              }
+            }}
           />
-          <TechnologyCard
-            name="TypeScript"
-            description="Strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
-            documentation="https://www.typescriptlang.org/"
-          />
-          <TechnologyCard
-            name="TailwindCSS"
-            description="Rapidly build modern websites without ever leaving your HTML"
-            documentation="https://tailwindcss.com/"
-          />
-          <TechnologyCard
-            name="tRPC"
-            description="End-to-end typesafe APIs made easy"
-            documentation="https://trpc.io/"
-          />
+          <div className="h-[75vh] flex flex-col items-center justify-center">
+            {allTasks.data ? (
+              <div className="w-[90%] overflow-scroll px-6">
+                {allTasks.data.map((task) => (
+                  <div key={task.id} className="mx-auto">
+                    <Todo task={task} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>Loading to-dos.</p>
+            )}
+          </div>
         </div>
+
+        <Link href="#footer">
+          <div className="h-[10vh] flex items-center">
+            <ChevronDownIcon
+              className="p-2 mx-auto text-gray-700 rounded-full hover:bg-gray-100"
+              width={48}
+              height={48}
+            />
+          </div>
+        </Link>
       </main>
     </Page>
-  );
-};
-
-const TechnologyCard = ({
-  name,
-  description,
-  documentation,
-}: TechnologyCardProps) => {
-  return (
-    <section className="flex flex-col justify-center p-6 duration-500 border-2 border-gray-500 rounded shadow-xl motion-safe:hover:scale-105">
-      <h2 className="text-lg text-gray-700">{name}</h2>
-      <p className="text-sm text-gray-600">{description}</p>
-      <a
-        className="mt-3 text-sm underline text-violet-500 decoration-dotted underline-offset-2"
-        href={documentation}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Documentation
-      </a>
-    </section>
   );
 };
 

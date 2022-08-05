@@ -13,7 +13,7 @@ const Footer = ({ links }: { links: { href: string }[] }) => {
   ));
 
   return (
-    <footer className="font-semibold py-4 grid gap-4 grid-cols-1 sm:grid-cols-3 items-center justify-items-center">
+    <footer id="footer" className="font-semibold py-4 grid gap-4 grid-cols-1 sm:grid-cols-3 items-center justify-items-center">
       <h1 className="text-3xl font-extrabold">Tapsyr</h1>
       <div className="flex gap-4 text-lg">{items}</div>
       <Link href="/">
