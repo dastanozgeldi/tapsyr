@@ -31,8 +31,8 @@ const Home: NextPage = () => {
 
   return (
     <Page title="Tasks">
-      <main className="mx-auto min-h-screen p-4">
-        <h1 className="h-[10vh] font-extrabold text-5xl md:text-[5rem] text-center">
+      <main className="mx-auto min-h-screen p-4 max-w-[90%] sm:max-w-[50%]">
+        <h1 className="h-[10vh] font-extrabold text-5xl md:text-[4rem] text-center">
           {hi ? <p>{hi.greeting}</p> : <p>Loading..</p>}
         </h1>
 
