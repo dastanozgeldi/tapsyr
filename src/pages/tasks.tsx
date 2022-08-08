@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Page from "../components/Layout/Page";
 import Todo from "../components/Todo";
+import SignIn from "../components/SignIn";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -29,6 +30,9 @@ const Home: NextPage = () => {
     },
   });
 
+  if (!session) {
+    return <SignIn message="Sign In to See the Tasks." />;
+  }
   return (
     <Page title="Tasks">
       <main className="mx-auto min-h-screen p-4 max-w-[90%] sm:max-w-[50%]">
@@ -59,7 +63,7 @@ const Home: NextPage = () => {
                 ))}
               </div>
             ) : (
-              <p>Loading to-dos.</p>
+              <p>Loading tasks...</p>
             )}
           </div>
         </div>
