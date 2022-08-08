@@ -10,7 +10,7 @@ const Donate = () => {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
       <h1 className="text-5xl md:text-[5rem] font-extrabold my-6">
         Don&apos;t Pay.
       </h1>
@@ -22,7 +22,7 @@ const Donate = () => {
       <button className="text-center" onClick={handleCopy}>
         {linkCopied ? "Copied!" : "Copy Link"}
       </button>
-    </main>
+    </div>
   );
 };
 
