@@ -62,7 +62,7 @@ const Hero = () => {
 
       <div className="font-semibold">
         <span className="absolute top-[93vh] left-0 ml-4 mb-4 py-2">
-          made with ❤️ by{" "}
+          made with {theme === "light" ? "🖤" : "❤️"} by{" "}
           <a className="text-teal-400" href="https://dosek.xyz/">
             Dositan
           </a>
