@@ -42,7 +42,7 @@ const Home: NextPage = () => {
 
         <div className="border-4 border-gray-700 rounded-md ">
           <input
-            className="h-[5vh] indent-1 outline-none bg-gray-100 px-4 py-2 w-full border-b-2 border-gray-700"
+            className="h-[5vh] indent-1 outline-none bg-gray-100 dark:bg-gray-800 px-4 py-2 w-full border-b-2 border-gray-700"
             placeholder="What needs to be done?"
             autoFocus
             onKeyDown={(e) => {
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
         <Link href="#footer">
           <div className="h-[10vh] flex items-center">
             <ChevronDownIcon
-              className="p-2 mx-auto text-gray-700 rounded-full hover:bg-gray-100"
+              className="p-2 mx-auto text-gray-700 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300"
               width={48}
               height={48}
             />

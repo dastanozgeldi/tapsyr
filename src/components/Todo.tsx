@@ -49,7 +49,11 @@ const Todo = ({ task }: Todo) => {
       <button className="p-1 m-0">
         <PencilAltIcon width={24} height={24} />
       </button>
-      <h2 className={`text-lg text-gray-700 ${done && "line-through"}`}>
+      <h2
+        className={`text-lg text-gray-700 dark:text-gray-200 ${
+          done && "line-through"
+        }`}
+      >
         {content}
       </h2>
       <button

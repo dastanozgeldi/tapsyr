@@ -2,10 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Your default theme */
+  --background: white;
+  --foreground: black;
+}
+
+[data-theme='dark'] {
+  --background: black;
+  --foreground: white;
+}
+
 @layer base {
   html,
   body {
-    @apply text-gray-700 scroll-smooth;
+    @apply text-gray-700 dark:text-gray-200 scroll-smooth;
   }
   a {
     @apply text-teal-500;
