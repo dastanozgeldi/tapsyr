@@ -13,7 +13,7 @@ const Hero = () => {
   useEffect(() => setMounted(true), []);
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[url(/reminder.svg)] bg-no-repeat bg-right-bottom bg-contain">
       <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold">
         Tapsyr
       </h1>
@@ -30,7 +30,7 @@ const Hero = () => {
       <button
         aria-label="Toggle Dark Mode"
         type="button"
-        className="w-9 h-9 p-0 bg-gray-200 rounded-lg dark:bg-gray-600 flex items-center justify-center  hover:ring-2 ring-gray-300  transition-all"
+        className="w-9 h-9 p-0 bg-gray-200 rounded-lg dark:bg-gray-600 flex items-center justify-center hover:ring-2 ring-gray-300  transition-all"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {mounted && (
@@ -63,18 +63,18 @@ const Hero = () => {
       <div className="font-semibold">
         <span className="absolute top-[93vh] left-0 ml-4 mb-4 py-2">
           made with {theme === "light" ? "🖤" : "❤️"} by{" "}
-          <a className="text-teal-400" href="https://dosek.xyz/">
+          <a className="highlight" href="https://dosek.xyz/">
             Dositan
           </a>
         </span>
         <Link href="#features">
-          <div className="absolute top-[93vh] right-0 flex items-center gap-2 cursor-pointer px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
+          <a className="absolute top-[93vh] right-0 flex items-center gap-2 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
             features
             <ChevronDownIcon width={24} height={24} />
-          </div>
+          </a>
         </Link>
       </div>
-    </main>
+    </div>
   );
 };
 

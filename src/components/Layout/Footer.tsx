@@ -18,11 +18,11 @@ const Footer = ({ links }: { links: { href: string }[] }) => {
       className="font-semibold py-4 grid gap-4 grid-cols-1 sm:grid-cols-3 items-center justify-items-center"
     >
       <h1 className="text-3xl font-extrabold">Tapsyr</h1>
-      <div className="flex gap-4 text-lg">{items}</div>
+      <div className="highlight flex gap-4 text-lg">{items}</div>
       <Link href="/">
-        <div className="flex items-center gap-2 cursor-pointer px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
+        <a className="flex items-center gap-2 cursor-pointer px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
           go {home} <ChevronUpIcon width={20} height={20} />
-        </div>
+        </a>
       </Link>
     </footer>
   );

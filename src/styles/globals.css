@@ -8,7 +8,7 @@
   --foreground: black;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background: black;
   --foreground: white;
 }
@@ -18,10 +18,13 @@
   body {
     @apply text-gray-700 dark:text-gray-200 scroll-smooth;
   }
-  a {
-    @apply text-teal-500;
-  }
   button {
     @apply bg-teal-400 font-bold p-4 text-white rounded-md text-2xl my-8;
+  }
+}
+
+@layer components {
+  .highlight {
+    @apply text-teal-500 font-semibold;
   }
 }
