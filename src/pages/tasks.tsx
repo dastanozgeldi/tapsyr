@@ -26,14 +26,14 @@ const Home: NextPage = () => {
   }
   return (
     <Page title="Tasks">
-      <div className="mx-auto min-h-screen p-4 max-w-[90%] md:max-w-[50%]">
-        <h1 className="h-[10vh] font-extrabold text-5xl md:text-[4rem] text-center">
-          {hi ? <p>{hi.greeting}</p> : <p>Loading..</p>}
+      <div className="flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4 max-w-[90%] md:max-w-[50%]">
+        <h1 className="font-extrabold text-5xl text-center">
+          {hi ? <p>{hi.greeting}</p> : <p>Loading...</p>}
         </h1>
 
-        <div className="border-4 border-gray-700 rounded-md ">
+        <div className="border-4 border-gray-700 rounded-xl">
           <input
-            className="h-[5vh] indent-1 outline-none bg-gray-100 dark:bg-gray-800 px-4 py-2 w-full border-b-2 border-gray-700"
+            className="rounded-t-xl indent-1 outline-none bg-gray-100 dark:bg-gray-800 px-4 py-2 w-full border-b-2 border-gray-700"
             placeholder="What needs to be done?"
             autoFocus
             onKeyDown={(e) => {
@@ -44,9 +44,9 @@ const Home: NextPage = () => {
               }
             }}
           />
-          <div className="h-[75vh] flex flex-col items-center justify-center">
+          <div className="h-[75vh] flex flex-col">
             {allTasks.data ? (
-              <div className="w-[90%] overflow-scroll px-6">
+              <div className="overflow-scroll px-6">
                 {allTasks.data.map((task) => (
                   <div key={task.id} className="mx-auto">
                     <Task task={task} />
@@ -54,13 +54,15 @@ const Home: NextPage = () => {
                 ))}
               </div>
             ) : (
-              <p>Loading tasks...</p>
+              <p className="h-[75vh] flex items-center justify-center text-2xl font-bold">
+                Loading tasks...
+              </p>
             )}
           </div>
         </div>
 
         <Link href="#footer">
-          <div className="h-[10vh] flex items-center">
+          <div className="flex items-center">
             <ChevronDownIcon
               className="p-2 mx-auto text-gray-700 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300"
               width={48}

@@ -1,6 +1,7 @@
 import { CheckIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { trpc } from "../utils/trpc";
+import Button from "./Button";
 
 function useClickOutside({
   ref,
@@ -88,13 +89,13 @@ const Task = ({ task }: Todo) => {
       className="my-4 flex items-center justify-between gap-4 p-4 duration-500 border-2 border-gray-500 rounded shadow-xl motion-safe:hover:scale-105"
       ref={wrapperRef}
     >
-      <button className="p-1 m-0" onClick={() => setEditing(!editing)}>
+      <Button className="p-1 m-0" onClick={() => setEditing(!editing)}>
         {editing ? (
           <CheckIcon width={24} height={24} />
         ) : (
           <PencilAltIcon width={24} height={24} />
         )}
-      </button>
+      </Button>
       <input
         className={`w-[80%] text-center bg-transparent rounded-xl text-lg text-gray-700 dark:text-gray-200`}
         disabled={!editing}
@@ -112,14 +113,14 @@ const Task = ({ task }: Todo) => {
           }
         }}
       />
-      <button
-        className="bg-red-500 p-1 m-0"
+      <Button
+        className="bg-red-400 hover:bg-red-500 p-1 m-0"
         onClick={() => {
           deleteTask.mutate(task.id);
         }}
       >
         <TrashIcon width={24} height={24} />
-      </button>
+      </Button>
     </div>
   );
 };

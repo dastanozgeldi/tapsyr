@@ -1,5 +1,6 @@
 import { signIn } from "next-auth/react";
 import React from "react";
+import Button from "./Button";
 
 const SignIn = ({ message = "" }) => {
   return (
@@ -7,7 +8,9 @@ const SignIn = ({ message = "" }) => {
       <h1 className="text-4xl font-extrabold text-center">
         {message || "This page requires signing in first."}
       </h1>
-      <button onClick={() => signIn()}>Sign In</button>
+      <Button className="my-8" onClick={() => signIn()}>
+        Sign In
+      </Button>
     </div>
   );
 };
