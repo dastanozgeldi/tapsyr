@@ -8,16 +8,20 @@ export const todoRouter = createRouter()
         orderBy: {
           createdAt: "desc",
         },
+        where: {
+          userId: ctx.session?.user?.id,
+        },
       });
     },
   })
   .mutation("add", {
     input: z.object({
       content: z.string().min(2),
-      userId: z.string().optional(),
     }),
     async resolve({ ctx, input }) {
-      const todo = await ctx.task.create({ data: input });
+      const todo = await ctx.task.create({
+        data: { ...input, userId: ctx.session?.user?.id },
+      });
       return todo;
     },
   })
@@ -27,6 +31,7 @@ export const todoRouter = createRouter()
       data: z.object({
         isDone: z.boolean().optional(),
         content: z.string().min(1).optional(),
+        updatedAt: z.date().default(new Date()),
       }),
     }),
     async resolve({ ctx, input }) {

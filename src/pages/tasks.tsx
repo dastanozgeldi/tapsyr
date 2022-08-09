@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Page from "../components/Layout/Page";
-import Todo from "../components/Todo";
+import Task from "../components/Task";
 import SignIn from "../components/SignIn";
 import { trpc } from "../utils/trpc";
 
@@ -17,16 +17,7 @@ const Home: NextPage = () => {
     async onMutate({ content }) {
       await utils.cancelQuery(["todo.all"]);
       const tasks = allTasks.data ?? [];
-      utils.setQueryData(
-        ["todo.all"],
-        [
-          {
-            content,
-            userId: session?.user?.id || null,
-          } as any,
-          ...tasks,
-        ]
-      );
+      utils.setQueryData(["todo.all"], [{ content } as any, ...tasks]);
     },
   });
 
@@ -35,7 +26,7 @@ const Home: NextPage = () => {
   }
   return (
     <Page title="Tasks">
-      <main className="mx-auto min-h-screen p-4 max-w-[90%] sm:max-w-[50%]">
+      <div className="mx-auto min-h-screen p-4 max-w-[90%] md:max-w-[50%]">
         <h1 className="h-[10vh] font-extrabold text-5xl md:text-[4rem] text-center">
           {hi ? <p>{hi.greeting}</p> : <p>Loading..</p>}
         </h1>
@@ -58,7 +49,7 @@ const Home: NextPage = () => {
               <div className="w-[90%] overflow-scroll px-6">
                 {allTasks.data.map((task) => (
                   <div key={task.id} className="mx-auto">
-                    <Todo task={task} />
+                    <Task task={task} />
                   </div>
                 ))}
               </div>
@@ -77,7 +68,7 @@ const Home: NextPage = () => {
             />
           </div>
         </Link>
-      </main>
+      </div>
     </Page>
   );
 };
