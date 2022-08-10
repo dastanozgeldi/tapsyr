@@ -1,5 +1,6 @@
 import { CheckIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import { RefObject, useEffect, useRef, useState } from "react";
+import clsx from "clsx";
 import { trpc } from "../utils/trpc";
 import Button from "./Button";
 
@@ -38,27 +39,11 @@ const Task = ({ task }: Todo) => {
 
   const utils = trpc.useContext();
   const [content, setContent] = useState(task.content);
-  const [done, setDone] = useState(task.isDone);
 
   useEffect(() => {
     setContent(task.content);
   }, [task.content]);
-  useEffect(() => {
-    setDone(task.isDone);
-  }, [task.isDone]);
 
-  const deleteTask = trpc.useMutation("todo.delete", {
-    async onMutate() {
-      await utils.cancelQuery(["todo.all"]);
-      const allTasks = utils.getQueryData(["todo.all"]);
-      if (!allTasks) return;
-
-      utils.setQueryData(
-        ["todo.all"],
-        allTasks.filter((t) => t.id != task.id)
-      );
-    },
-  });
   const editTask = trpc.useMutation("todo.edit", {
     async onMutate({ id, data }) {
       await utils.cancelQuery(["todo.all"]);
@@ -68,6 +53,18 @@ const Task = ({ task }: Todo) => {
       utils.setQueryData(
         ["todo.all"],
         allTasks.map((t) => (t.id === id ? { ...t, ...data } : t))
+      );
+    },
+  });
+  const deleteTask = trpc.useMutation("todo.delete", {
+    async onMutate() {
+      await utils.cancelQuery(["todo.all"]);
+      const allTasks = utils.getQueryData(["todo.all"]);
+      if (!allTasks) return;
+
+      utils.setQueryData(
+        ["todo.all"],
+        allTasks.filter((t) => t.id != task.id)
       );
     },
   });
@@ -86,7 +83,10 @@ const Task = ({ task }: Todo) => {
 
   return (
     <div
-      className="my-4 flex items-center justify-between gap-4 p-4 duration-500 border-2 border-gray-500 rounded shadow-xl motion-safe:hover:scale-105"
+      className={clsx(
+        "my-4 flex items-center justify-between gap-4 p-4 border-2 border-gray-500 rounded-xl",
+        editing && "bg-gray-200 dark:bg-gray-700"
+      )}
       ref={wrapperRef}
     >
       <Button className="p-1 m-0" onClick={() => setEditing(!editing)}>
@@ -97,7 +97,7 @@ const Task = ({ task }: Todo) => {
         )}
       </Button>
       <input
-        className={`w-[80%] text-center bg-transparent rounded-xl text-lg text-gray-700 dark:text-gray-200`}
+        className="outline-none w-[80%] text-center bg-transparent rounded-xl text-lg text-gray-700 dark:text-gray-200"
         disabled={!editing}
         type="text"
         value={content}
@@ -115,9 +115,7 @@ const Task = ({ task }: Todo) => {
       />
       <Button
         className="bg-red-400 hover:bg-red-500 p-1 m-0"
-        onClick={() => {
-          deleteTask.mutate(task.id);
-        }}
+        onClick={() => deleteTask.mutate(task.id)}
       >
         <TrashIcon width={24} height={24} />
       </Button>

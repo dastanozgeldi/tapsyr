@@ -26,7 +26,9 @@ const Hero = () => {
           <Button className="my-8">Go to Tasks</Button>
         </Link>
       ) : (
-        <Button className="my-8" onClick={() => signIn()}>Get Started</Button>
+        <Button className="my-8" onClick={() => signIn()}>
+          Get Started
+        </Button>
       )}
       <button
         aria-label="Toggle Dark Mode"
@@ -65,11 +67,11 @@ const Hero = () => {
         <span className="absolute top-[93vh] left-0 ml-4 mb-4 py-2">
           made with {theme === "light" ? "🖤" : "❤️"} by{" "}
           <a className="highlight" href="https://dosek.xyz/">
-            Dositan
+            Dastan
           </a>
         </span>
         <Link href="#features">
-          <a className="absolute top-[93vh] right-0 flex items-center gap-2 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
+          <a className="absolute top-[93vh] right-0 flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800">
             features
             <ChevronDownIcon width={24} height={24} />
           </a>

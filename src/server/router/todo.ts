@@ -5,12 +5,8 @@ export const todoRouter = createRouter()
   .query("all", {
     async resolve({ ctx }) {
       return ctx.task.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        where: {
-          userId: ctx.session?.user?.id,
-        },
+        orderBy: { createdAt: "asc" },
+        where: { userId: ctx.session?.user?.id },
       });
     },
   })

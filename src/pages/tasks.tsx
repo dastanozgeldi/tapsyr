@@ -11,13 +11,12 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   const utils = trpc.useContext();
   const allTasks = trpc.useQuery(["todo.all"]);
-  const { data: hi } = trpc.useQuery(["user.hi"]);
 
   const addTask = trpc.useMutation("todo.add", {
     async onMutate({ content }) {
       await utils.cancelQuery(["todo.all"]);
       const tasks = allTasks.data ?? [];
-      utils.setQueryData(["todo.all"], [{ content } as any, ...tasks]);
+      utils.setQueryData(["todo.all"], [...tasks, { content } as any]);
     },
   });
 
@@ -26,9 +25,9 @@ const Home: NextPage = () => {
   }
   return (
     <Page title="Tasks">
-      <div className="flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4 max-w-[90%] md:max-w-[50%]">
+      <div className="max-w-[90%] md:max-w-[50%] flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4">
         <h1 className="font-extrabold text-5xl text-center">
-          {hi ? <p>{hi.greeting}</p> : <p>Loading...</p>}
+          Hi, {session.user?.name}!
         </h1>
 
         <div className="border-4 border-gray-700 rounded-xl">
@@ -46,16 +45,14 @@ const Home: NextPage = () => {
           />
           <div className="h-[75vh] flex flex-col">
             {allTasks.data ? (
-              <div className="overflow-scroll px-6">
+              <div className="px-6 overflow-scroll">
                 {allTasks.data.map((task) => (
-                  <div key={task.id} className="mx-auto">
-                    <Task task={task} />
-                  </div>
+                  <Task key={task.id} task={task} />
                 ))}
               </div>
             ) : (
-              <p className="h-[75vh] flex items-center justify-center text-2xl font-bold">
-                Loading tasks...
+              <p className="text-center h-[75vh] flex items-center justify-center text-2xl font-bold px-6">
+                Loading everything I remember...
               </p>
             )}
           </div>
