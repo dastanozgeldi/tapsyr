@@ -1,24 +1,20 @@
-import { CheckIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { CheckIcon, TrashIcon } from "@heroicons/react/solid";
 import clsx from "clsx";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { trpc } from "../utils/trpc";
 import Button from "./Button";
 
 function useClickOutside({
   ref,
   callback,
-  enabled,
 }: {
   ref: RefObject<any>;
   callback: () => void;
-  enabled: boolean;
 }) {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
   useEffect(() => {
-    if (!enabled) return;
-
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target)) {
         callbackRef.current();
@@ -29,11 +25,10 @@ function useClickOutside({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref, enabled]);
+  }, [ref]);
 }
 
 const Task = ({ task }: Todo) => {
-  const [editing, setEditing] = useState(false);
   const wrapperRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -71,34 +66,34 @@ const Task = ({ task }: Todo) => {
 
   useClickOutside({
     ref: wrapperRef,
-    enabled: editing,
     callback() {
       editTask.mutate({
         id: task.id,
         data: { content },
       });
-      setEditing(false);
     },
   });
 
   return (
     <div
-      className={clsx(
-        "my-4 flex items-center justify-between gap-4 p-4 border-2 border-gray-500 rounded-xl",
-        editing && "bg-gray-200 dark:bg-gray-700"
-      )}
+      className="my-4 flex items-center justify-between gap-4 p-4 border-2 border-gray-500 rounded-xl"
       ref={wrapperRef}
     >
-      <Button className="p-1 m-0" onClick={() => setEditing(!editing)}>
-        {editing ? (
-          <CheckIcon width={24} height={24} />
-        ) : (
-          <PencilAltIcon width={24} height={24} />
-        )}
+      <Button
+        className="p-1 m-0 rounded-full"
+        onClick={() =>
+          editTask.mutate({ id: task.id, data: { isDone: !task.isDone } })
+        }
+      >
+        <CheckIcon width={24} height={24} />
       </Button>
       <input
-        className="outline-none w-[80%] text-center bg-transparent rounded-xl text-lg text-gray-700 dark:text-gray-200"
-        disabled={!editing}
+        id={task.id}
+        className={clsx(
+          "p-2 outline-none w-[80%] text-center rounded-xl text-lg",
+          "bg-transparent text-gray-700 dark:text-gray-200 focus:bg-gray-100 focus:dark:bg-gray-800",
+          task.isDone && "line-through"
+        )}
         type="text"
         value={content}
         ref={inputRef}
@@ -109,12 +104,12 @@ const Task = ({ task }: Todo) => {
               id: task.id,
               data: { content },
             });
-            setEditing(false);
+            document.getElementById(task.id)?.blur();
           }
         }}
       />
       <Button
-        className="bg-red-400 hover:bg-red-500 p-1 m-0"
+        className="rounded-full bg-red-400 hover:bg-red-500 p-1 m-0"
         onClick={() => deleteTask.mutate(task.id)}
       >
         <TrashIcon width={24} height={24} />

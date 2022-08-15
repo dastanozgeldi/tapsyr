@@ -41,7 +41,7 @@ export const todoRouter = createRouter()
   })
   .mutation("delete", {
     input: z.string().cuid(),
-    async resolve({ input: id, ctx }) {
+    async resolve({ ctx, input: id }) {
       await ctx.task.delete({ where: { id } });
       return id;
     },

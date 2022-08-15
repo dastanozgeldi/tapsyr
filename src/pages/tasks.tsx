@@ -12,11 +12,35 @@ const Home: NextPage = () => {
   const utils = trpc.useContext();
   const allTasks = trpc.useQuery(["todo.all"]);
 
+  const clearCompleted = trpc.useMutation(["todo.clearCompleted"], {
+    async onMutate() {
+      await utils.cancelQuery(["todo.all"]);
+      const tasks = allTasks.data ?? [];
+      utils.setQueryData(
+        ["todo.all"],
+        tasks.filter((t) => !t.isDone)
+      );
+    },
+  });
+
   const addTask = trpc.useMutation("todo.add", {
     async onMutate({ content }) {
       await utils.cancelQuery(["todo.all"]);
       const tasks = allTasks.data ?? [];
-      utils.setQueryData(["todo.all"], [...tasks, { content } as any]);
+      utils.setQueryData(
+        ["todo.all"],
+        [
+          ...tasks,
+          {
+            id: `${Math.random()}`,
+            content,
+            isDone: false,
+            createdAt: new Date(),
+            updatedAt: null,
+            userId: session?.user?.id!,
+          },
+        ]
+      );
     },
   });
 
@@ -26,7 +50,7 @@ const Home: NextPage = () => {
   return (
     <Page title="Tasks">
       <div className="max-w-[90%] md:max-w-[50%] flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4">
-        <h1 className="font-extrabold text-5xl text-center">
+        <h1 className="font-extrabold text-4xl text-center">
           Hi, {session.user?.name}!
         </h1>
 
@@ -43,7 +67,7 @@ const Home: NextPage = () => {
               }
             }}
           />
-          <div className="h-[75vh] flex flex-col">
+          <div className="h-[70vh] flex flex-col">
             {allTasks.data ? (
               <div className="px-6 overflow-scroll">
                 {allTasks.data.map((task) => (
@@ -56,6 +80,13 @@ const Home: NextPage = () => {
               </p>
             )}
           </div>
+
+          <button
+            className="text-gray-200 bg-gray-700 text-xl font-bold p-4 rounded-t-md flex mx-auto"
+            onClick={() => clearCompleted.mutate()}
+          >
+            Clear Completed
+          </button>
         </div>
 
         <Link href="#footer">

@@ -9,7 +9,7 @@ const Features = () => {
       <div className="m-2 max-w-[40ch] bg-[#202020]/70 rounded-md p-4">
         <h1 className="text-4xl my-3">🚀 Simplicity.</h1>
         <p>
-          Tapsyr only requires you to login via Google (the most popular
+          Tapsyr only requires you to Sign In with Google (the most popular
           option). Go to{" "}
           <Link href="/tasks">
             <a className="highlight">/tasks</a>
