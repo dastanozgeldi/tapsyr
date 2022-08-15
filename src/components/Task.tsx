@@ -67,6 +67,7 @@ const Task = ({ task }: Todo) => {
   useClickOutside({
     ref: wrapperRef,
     callback() {
+      if (content === task.content) return;
       editTask.mutate({
         id: task.id,
         data: { content },
@@ -76,7 +77,7 @@ const Task = ({ task }: Todo) => {
 
   return (
     <div
-      className="my-4 flex items-center justify-between gap-4 p-4 border-2 border-gray-500 rounded-xl"
+      className="my-4 flex items-center justify-between overflow-x-scroll gap-4 p-4 border-2 border-gray-500 rounded-xl"
       ref={wrapperRef}
     >
       <Button
@@ -100,10 +101,13 @@ const Task = ({ task }: Todo) => {
         onChange={(e) => setContent(e.currentTarget.value)}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
-            editTask.mutate({
-              id: task.id,
-              data: { content },
-            });
+            if (content === task.content) return;
+            else {
+              editTask.mutate({
+                id: task.id,
+                data: { content },
+              });
+            }
             document.getElementById(task.id)?.blur();
           }
         }}
