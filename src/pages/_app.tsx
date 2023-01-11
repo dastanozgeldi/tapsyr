@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import superjson from "superjson";
 import "../styles/globals.css";
-import Layout from "../layouts/Layout";
+import { Layout } from "../layouts/Layout";
 
 const MyApp: AppType = ({
   Component,

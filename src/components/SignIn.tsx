@@ -1,7 +1,8 @@
 import { signIn } from "next-auth/react";
+import { FC, PropsWithChildren } from "react";
 import { ACTION_BUTTON } from "../styles";
 
-const SignIn = ({ children }: { children: React.ReactNode }) => {
+export const SignIn: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <h1 className="text-4xl font-extrabold text-center">
@@ -13,5 +14,3 @@ const SignIn = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
-
-export default SignIn;

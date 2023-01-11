@@ -1,9 +1,9 @@
 import type { FC, PropsWithChildren } from "react";
 import Head from "next/head";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Footer from "./Footer";
+import { Footer } from "./Footer";
 
-const Layout: FC<PropsWithChildren> = ({ children }) => {
+export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [parent] = useAutoAnimate<HTMLDivElement>();
   const links = [{ href: `/tasks` }, { href: "/donate" }];
 
@@ -38,5 +38,3 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     </main>
   );
 };
-
-export default Layout;

@@ -1,12 +1,15 @@
-const Button = ({
+import { PropsWithChildren } from "react";
+
+type ButtonProps = PropsWithChildren & {
+  className?: string;
+  onClick?: () => void;
+};
+
+export const Button = ({
   children,
   className = "",
   onClick = undefined,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
-}) => {
+}: ButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -16,5 +19,3 @@ const Button = ({
     </button>
   );
 };
-
-export default Button;

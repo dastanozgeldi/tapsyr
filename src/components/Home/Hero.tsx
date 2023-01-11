@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { ACTION_BUTTON } from "../../styles";
 
-const Hero = () => {
+export const Hero = () => {
   const { data: session } = useSession();
 
   const [mounted, setMounted] = useState(false);
@@ -80,5 +80,3 @@ const Hero = () => {
     </div>
   );
 };
-
-export default Hero;

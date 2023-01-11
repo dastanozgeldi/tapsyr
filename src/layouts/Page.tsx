@@ -5,7 +5,7 @@ type PageProps = PropsWithChildren & {
   title: string;
 };
 
-const Page = ({ children, title }: PageProps) => {
+export const Page = ({ children, title }: PageProps) => {
   const t = `${title} | Tapsyr`;
 
   return (
@@ -21,5 +21,3 @@ const Page = ({ children, title }: PageProps) => {
     </article>
   );
 };
-
-export default Page;

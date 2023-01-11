@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import Page from "../layouts/Page";
-import SignIn from "../components/SignIn";
+import { Page } from "../layouts/Page";
+import { SignIn } from "../components/SignIn";
 import { trpc } from "../utils/trpc";
 import { TaskItem } from "../components/tasks/TaskItem";
 

@@ -2,7 +2,13 @@ import { ChevronUpIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const Footer = ({ links }: { links: { href: string }[] }) => {
+type FooterProps = {
+  links: {
+    href: string;
+  }[];
+};
+
+export const Footer = ({ links }: FooterProps) => {
   const { pathname } = useRouter();
 
   const home = pathname === "/" ? "up" : "home";
@@ -27,5 +33,3 @@ const Footer = ({ links }: { links: { href: string }[] }) => {
     </footer>
   );
 };
-
-export default Footer;
