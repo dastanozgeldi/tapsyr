@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
 import { FC, PropsWithChildren } from "react";
-import { ACTION_BUTTON } from "../styles";
+import { ACTION_BUTTON } from "../../styles";
 
 export const SignIn: FC<PropsWithChildren> = ({ children }) => {
   return (
