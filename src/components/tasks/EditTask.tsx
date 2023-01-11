@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { INPUT_TEXT } from "../../styles";
-import { Modal } from "../common/Modal";
+import { INPUT_TEXT } from "styles";
+import { Modal } from "components/common/Modal";
 
 export const EditTask = ({ task, isOpen, setIsOpen, editTask }: any) => {
   const [content, setContent] = useState(task.content);

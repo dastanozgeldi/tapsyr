@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ACTION_BUTTON } from "../styles";
+import { ACTION_BUTTON } from "styles";
 
 const Donate = () => {
   const [linkCopied, setLinkCopied] = useState(false);

@@ -2,8 +2,8 @@ import { CheckIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import { type Task } from "@prisma/client";
 import clsx from "clsx";
 import { useRef, useState } from "react";
-import { ACTION_BUTTON, DELETE_BUTTON } from "../../styles";
-import { trpc } from "../../utils/trpc";
+import { ACTION_BUTTON, DELETE_BUTTON } from "styles";
+import { trpc } from "utils/trpc";
 import { EditTask } from "./EditTask";
 
 export const TaskItem = ({ task }: { task: Task }) => {

@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
-import { Page } from "../layouts/Page";
-import { SignIn } from "../components/common/SignIn";
-import { trpc } from "../utils/trpc";
-import { TaskItem } from "../components/tasks/TaskItem";
+import { Page } from "layouts/Page";
+import { SignIn } from "components/common/SignIn";
+import { trpc } from "utils/trpc";
+import { TaskItem } from "components/tasks/TaskItem";
 
 export default function Tasks() {
   const { data: session } = useSession();
