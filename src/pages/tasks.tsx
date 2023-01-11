@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Page } from "../layouts/Page";
 import { SignIn } from "../components/common/SignIn";
 import { trpc } from "../utils/trpc";
@@ -30,11 +28,10 @@ export default function Tasks() {
   if (!session) return <SignIn>Sign In to See the Tasks.</SignIn>;
   return (
     <Page title="Tasks">
-      {/* header */}
-      <h1 className="my-4 font-extrabold text-4xl text-center">
-        Hi, {session.user?.name}!
-      </h1>
-      <div className="max-w-[60ch] flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4">
+      <div className="max-w-[60ch] flex flex-col  gap-4 mx-auto min-h-screen p-4">
+        <h1 className="my-4 font-extrabold text-4xl text-center">
+          Hi, {session.user?.name}!
+        </h1>
         {/* table of tasks */}
         <div className="w-full border-4 border-gray-700 rounded-xl">
           <input
@@ -49,15 +46,15 @@ export default function Tasks() {
               }
             }}
           />
-          <div className="h-[70vh] flex flex-col">
+          <div className="h-[65vh] flex flex-col">
             {allTasks.data ? (
-              <div className="px-6 overflow-scroll">
+              <div className="px-6 overflow-auto">
                 {allTasks.data.map((task) => (
                   <TaskItem key={task.id} task={task} />
                 ))}
               </div>
             ) : (
-              <p className="text-center h-[75vh] flex items-center justify-center text-2xl font-bold px-6">
+              <p className="text-center h-[65vh] flex items-center justify-center text-2xl font-bold px-6">
                 Loading everything I remember...
               </p>
             )}
@@ -70,16 +67,6 @@ export default function Tasks() {
             Clear Completed
           </button>
         </div>
-        {/* scroll down button */}
-        <Link href="#footer">
-          <div className="flex items-center">
-            <ChevronDownIcon
-              className="p-2 mx-auto text-gray-700 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300"
-              width={48}
-              height={48}
-            />
-          </div>
-        </Link>
       </div>
     </Page>
   );
