@@ -17,14 +17,14 @@ export const TaskItem = ({ task }: { task: Task }) => {
     setContent(task.content);
   }, [task.content]);
 
-  const editTask = trpc.useMutation("todo.edit", {
+  const editTask = trpc.useMutation("task.edit", {
     async onSuccess() {
-      await utils.invalidateQueries(["todo.all"]);
+      await utils.invalidateQueries(["task.all"]);
     },
   });
-  const deleteTask = trpc.useMutation("todo.delete", {
+  const deleteTask = trpc.useMutation("task.delete", {
     async onSuccess() {
-      await utils.invalidateQueries(["todo.all"]);
+      await utils.invalidateQueries(["task.all"]);
     },
   });
 

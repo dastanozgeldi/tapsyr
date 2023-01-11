@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { Page } from "../layouts/Page";
-import { SignIn } from "../components/SignIn";
+import { SignIn } from "../components/common/SignIn";
 import { trpc } from "../utils/trpc";
 import { TaskItem } from "../components/tasks/TaskItem";
 
@@ -10,18 +10,18 @@ export default function Tasks() {
   const { data: session } = useSession();
 
   const utils = trpc.useContext();
-  const allTasks = trpc.useQuery(["todo.all"]);
-  const addTask = trpc.useMutation("todo.add", {
+  const allTasks = trpc.useQuery(["task.all"]);
+  const addTask = trpc.useMutation("task.add", {
     async onSuccess() {
-      await utils.invalidateQueries(["todo.all"]);
+      await utils.invalidateQueries(["task.all"]);
     },
   });
-  const clearCompleted = trpc.useMutation(["todo.clearCompleted"], {
+  const clearCompleted = trpc.useMutation(["task.clearCompleted"], {
     async onMutate() {
-      await utils.cancelQuery(["todo.all"]);
+      await utils.cancelQuery(["task.all"]);
       const tasks = allTasks.data ?? [];
       utils.setQueryData(
-        ["todo.all"],
+        ["task.all"],
         tasks.filter((t) => !t.isDone)
       );
     },

@@ -2,11 +2,11 @@
 import { createRouter } from "./context";
 import superjson from "superjson";
 
-import { todoRouter } from "./todo";
+import { taskRouter } from "./task";
 
 export const appRouter = createRouter()
   .transformer(superjson)
-  .merge("todo.", todoRouter);
+  .merge("task.", taskRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

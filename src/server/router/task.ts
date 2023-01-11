@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { createRouter } from "./context";
 
-export const todoRouter = createRouter()
+export const taskRouter = createRouter()
   .query("all", {
     resolve({ ctx }) {
       return ctx.prisma.task.findMany({
-        where: { userId: ctx.session?.user?.id },
+        where: {
+          userId: ctx.session?.user?.id,
+        },
       });
     },
   })
@@ -14,10 +16,13 @@ export const todoRouter = createRouter()
       content: z.string().min(1),
     }),
     async resolve({ ctx, input }) {
-      const todo = await ctx.prisma.task.create({
-        data: { ...input, userId: ctx.session?.user?.id },
+      const task = await ctx.prisma.task.create({
+        data: {
+          ...input,
+          userId: ctx.session?.user?.id,
+        },
       });
-      return todo;
+      return task;
     },
   })
   .mutation("edit", {
@@ -31,23 +36,29 @@ export const todoRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { id, data } = input;
-      const todo = await ctx.prisma.task.update({
+      const task = await ctx.prisma.task.update({
         where: { id },
         data,
       });
-      return todo;
+      return task;
     },
   })
   .mutation("delete", {
     input: z.string().cuid(),
     async resolve({ ctx, input: id }) {
-      await ctx.prisma.task.delete({ where: { id } });
+      await ctx.prisma.task.delete({
+        where: { id },
+      });
       return id;
     },
   })
   .mutation("clearCompleted", {
     async resolve({ ctx }) {
-      await ctx.prisma.task.deleteMany({ where: { isDone: true } });
+      await ctx.prisma.task.deleteMany({
+        where: {
+          isDone: true,
+        },
+      });
       return ctx.prisma.task.findMany();
     },
   });
