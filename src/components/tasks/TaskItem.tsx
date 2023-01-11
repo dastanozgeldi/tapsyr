@@ -1,34 +1,12 @@
 import { CheckIcon, TrashIcon } from "@heroicons/react/solid";
+import { type Task } from "@prisma/client";
 import clsx from "clsx";
-import { RefObject, useEffect, useRef, useState } from "react";
-import { trpc } from "../utils/trpc";
-import Button from "./Button";
+import { useEffect, useRef, useState } from "react";
+import { ACTION_BUTTON, DELETE_BUTTON } from "../../styles";
+import { trpc } from "../../utils/trpc";
+import { useClickOutside } from "../../utils/useClickOutside";
 
-function useClickOutside({
-  ref,
-  callback,
-}: {
-  ref: RefObject<any>;
-  callback: () => void;
-}) {
-  const callbackRef = useRef(callback);
-  callbackRef.current = callback;
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        callbackRef.current();
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-}
-
-const Task = ({ task }: Todo) => {
+export const TaskItem = ({ task }: { task: Task }) => {
   const wrapperRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,27 +18,13 @@ const Task = ({ task }: Todo) => {
   }, [task.content]);
 
   const editTask = trpc.useMutation("todo.edit", {
-    async onMutate({ id, data }) {
-      await utils.cancelQuery(["todo.all"]);
-      const allTasks = utils.getQueryData(["todo.all"]);
-      if (!allTasks) return;
-
-      utils.setQueryData(
-        ["todo.all"],
-        allTasks.map((t) => (t.id === id ? { ...t, ...data } : t))
-      );
+    async onSuccess() {
+      await utils.invalidateQueries(["todo.all"]);
     },
   });
   const deleteTask = trpc.useMutation("todo.delete", {
-    async onMutate() {
-      await utils.cancelQuery(["todo.all"]);
-      const allTasks = utils.getQueryData(["todo.all"]);
-      if (!allTasks) return;
-
-      utils.setQueryData(
-        ["todo.all"],
-        allTasks.filter((t) => t.id != task.id)
-      );
+    async onSuccess() {
+      await utils.invalidateQueries(["todo.all"]);
     },
   });
 
@@ -80,14 +44,14 @@ const Task = ({ task }: Todo) => {
       className="my-4 flex items-center justify-between overflow-x-scroll gap-4 p-4 border-2 border-gray-500 rounded-xl"
       ref={wrapperRef}
     >
-      <Button
-        className="p-1 m-0 rounded-full"
+      <button
+        className={`${ACTION_BUTTON} p-1 m-0 rounded-full`}
         onClick={() =>
           editTask.mutate({ id: task.id, data: { isDone: !task.isDone } })
         }
       >
         <CheckIcon width={24} height={24} />
-      </Button>
+      </button>
       <input
         id={task.id}
         className={clsx(
@@ -112,14 +76,12 @@ const Task = ({ task }: Todo) => {
           }
         }}
       />
-      <Button
-        className="rounded-full bg-red-400 hover:bg-red-500 p-1 m-0"
+      <button
+        className={`${DELETE_BUTTON} rounded-full bg-red-400 hover:bg-red-500 p-1 m-0`}
         onClick={() => deleteTask.mutate(task.id)}
       >
         <TrashIcon width={24} height={24} />
-      </Button>
+      </button>
     </div>
   );
 };
-
-export default Task;

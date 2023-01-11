@@ -3,7 +3,7 @@ import { signIn, useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import Button from "../Button";
+import { ACTION_BUTTON } from "../../styles";
 
 const Hero = () => {
   const { data: session } = useSession();
@@ -23,12 +23,12 @@ const Hero = () => {
       </p>
       {session ? (
         <Link href="/tasks">
-          <Button className="my-8">Go to Tasks</Button>
+          <button className={`${ACTION_BUTTON} my-8`}>Go to Tasks</button>
         </Link>
       ) : (
-        <Button className="my-8" onClick={() => signIn()}>
+        <button className={`${ACTION_BUTTON} my-8`} onClick={() => signIn()}>
           Get Started
-        </Button>
+        </button>
       )}
       <button
         aria-label="Toggle Dark Mode"

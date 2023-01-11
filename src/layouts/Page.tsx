@@ -1,7 +1,11 @@
-import type { ReactNode } from "react";
 import Head from "next/head";
+import { PropsWithChildren } from "react";
 
-const Page = ({ children, title }: { children: ReactNode; title: string }) => {
+type PageProps = PropsWithChildren & {
+  title: string;
+};
+
+const Page = ({ children, title }: PageProps) => {
   const t = `${title} | Tapsyr`;
 
   return (

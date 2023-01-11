@@ -1,17 +1,21 @@
-import type { NextPage } from "next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import Page from "../components/Layout/Page";
-import Task from "../components/Task";
+import Page from "../layouts/Page";
 import SignIn from "../components/SignIn";
 import { trpc } from "../utils/trpc";
+import { TaskItem } from "../components/tasks/TaskItem";
 
-const Home: NextPage = () => {
+export default function Tasks() {
   const { data: session } = useSession();
+
   const utils = trpc.useContext();
   const allTasks = trpc.useQuery(["todo.all"]);
-
+  const addTask = trpc.useMutation("todo.add", {
+    async onSuccess() {
+      await utils.invalidateQueries(["todo.all"]);
+    },
+  });
   const clearCompleted = trpc.useMutation(["todo.clearCompleted"], {
     async onMutate() {
       await utils.cancelQuery(["todo.all"]);
@@ -23,41 +27,19 @@ const Home: NextPage = () => {
     },
   });
 
-  const addTask = trpc.useMutation("todo.add", {
-    async onMutate({ content }) {
-      await utils.cancelQuery(["todo.all"]);
-      const tasks = allTasks.data ?? [];
-      utils.setQueryData(
-        ["todo.all"],
-        [
-          ...tasks,
-          {
-            id: `${Math.random()}`,
-            content,
-            isDone: false,
-            createdAt: new Date(),
-            updatedAt: null,
-            userId: session?.user?.id!,
-          },
-        ]
-      );
-    },
-  });
-
-  if (!session) {
-    return <SignIn message="Sign In to See the Tasks." />;
-  }
+  if (!session) return <SignIn>Sign In to See the Tasks.</SignIn>;
   return (
     <Page title="Tasks">
-      <div className="max-w-[90%] md:max-w-[50%] flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4">
-        <h1 className="font-extrabold text-4xl text-center">
-          Hi, {session.user?.name}!
-        </h1>
-
-        <div className="border-4 border-gray-700 rounded-xl">
+      {/* header */}
+      <h1 className="my-4 font-extrabold text-4xl text-center">
+        Hi, {session.user?.name}!
+      </h1>
+      <div className="max-w-[60ch] flex flex-col items-center justify-center gap-4 mx-auto min-h-screen p-4">
+        {/* table of tasks */}
+        <div className="w-full border-4 border-gray-700 rounded-xl">
           <input
             className="rounded-t-xl indent-1 outline-none bg-gray-100 dark:bg-gray-800 px-4 py-2 w-full border-b-2 border-gray-700"
-            placeholder="What needs to be done?"
+            placeholder="go to math class at 1pm..."
             autoFocus
             onKeyDown={(e) => {
               const content = e.currentTarget.value.trim();
@@ -71,7 +53,7 @@ const Home: NextPage = () => {
             {allTasks.data ? (
               <div className="px-6 overflow-scroll">
                 {allTasks.data.map((task) => (
-                  <Task key={task.id} task={task} />
+                  <TaskItem key={task.id} task={task} />
                 ))}
               </div>
             ) : (
@@ -88,7 +70,7 @@ const Home: NextPage = () => {
             Clear Completed
           </button>
         </div>
-
+        {/* scroll down button */}
         <Link href="#footer">
           <div className="flex items-center">
             <ChevronDownIcon
@@ -101,6 +83,4 @@ const Home: NextPage = () => {
       </div>
     </Page>
   );
-};
-
-export default Home;
+}

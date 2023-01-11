@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../components/Button";
+import { ACTION_BUTTON } from "../styles";
 
 const Donate = () => {
   const [linkCopied, setLinkCopied] = useState(false);
@@ -17,9 +17,9 @@ const Donate = () => {
         Share with your friends instead! I want to try delivering apps to a huge
         audience. Your help is highly appreciated!
       </p>
-      <Button className="my-8" onClick={handleCopy}>
+      <button className={`${ACTION_BUTTON} my-8`} onClick={handleCopy}>
         {linkCopied ? "Copied!" : "Copy Link"}
-      </Button>
+      </button>
     </div>
   );
 };
